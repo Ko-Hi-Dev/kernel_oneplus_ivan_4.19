@@ -18,6 +18,11 @@ OBJCOPYFLAGS_Image :=-O binary -R .note -R .note.gnu.build-id -R .comment -S
 
 targets := Image Image.bz2 Image.gz Image.lz4 Image.lzma Image.lzo
 
+DTBO_NAMES := $(subst $\",,$(CONFIG_BUILD_ARM64_DTB_OVERLAY_IMAGE_NAMES))
+ifneq ($(DTBO_NAMES),)
+DTB_LIST += $(addsuffix .dtbo,$(DTBO_NAMES))
+endif
+
 $(obj)/Image: vmlinux FORCE
 	$(call if_changed,objcopy)
 
